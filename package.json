@@ -1,0 +1,42 @@
+{
+  "name": "wuya-accounting",
+  "version": "1.0.0",
+  "description": "无涯记账 - 个人日常支出记账工具",
+  "main": "./out/main/index.js",
+  "author": "无涯记账",
+  "license": "MIT",
+  "scripts": {
+    "dev": "node scripts/dev.js",
+    "build": "electron-vite build",
+    "package": "node scripts/package.js"
+  },
+  "dependencies": {
+    "sql.js": "^1.10.0",
+    "dayjs": "^1.11.10",
+    "echarts": "^5.5.0",
+    "element-plus": "^2.7.0",
+    "vue": "^3.4.0",
+    "vue-router": "^4.3.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.0.0",
+    "electron": "^27.3.11",
+    "electron-builder": "^24.9.0",
+    "electron-vite": "^2.0.0"
+  },
+  "build": {
+    "appId": "com.wuya.accounting",
+    "productName": "无涯记账",
+    "directories": {
+      "output": "dist-electron"
+    },
+    "win": {
+      "target": "nsis",
+      "signAndEditExecutable": false
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    }
+  }
+}

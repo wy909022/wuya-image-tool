@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+*.egg
+
+# 虚拟环境
+venv/
+.venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+
+# 系统文件
+Thumbs.db
+.DS_Store
+
+# 下载的图片（不要提交到仓库）
+爬取的图片/
+Downloads/无涯图片/
+
+# 数据库
+*.db
+*.sqlite
+
+# Node / Electron（不需要提交）
+node_modules/
+dist-electron/
+out/

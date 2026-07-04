@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(where flet *)",
+      "Bash(where flutter *)",
+      "Bash(where serious-python *)",
+      "Bash(where briefcase *)",
+      "Bash(pip list *)",
+      "Bash(echo \"exit: $?\")",
+      "Read(//c/Users/Administrator/**)",
+      "Read(//c//**)",
+      "Read(//d//**)",
+      "WebSearch",
+      "Bash(git --version)",
+      "Bash(gh --version)",
+      "Bash(gh auth *)",
+      "Bash(git init *)",
+      "Bash(git add *)"
+    ]
+  }
+}
