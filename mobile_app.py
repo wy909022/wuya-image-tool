@@ -3,17 +3,12 @@
 =========================================
 Flet (Flutter) 移动端 — 完整中文支持
 """
-import sys, os, time, queue, threading, re, importlib.util
+import sys, os, time, queue, threading, re
 from pathlib import Path
 
-# ── 动态加载核心模块 ───────────────────────────
-_core_path = Path(__file__).parent / "无涯图片爬取工具.py"
-_spec = importlib.util.spec_from_file_location("wuyatu_core", _core_path)
-_core = importlib.util.module_from_spec(_spec)
-sys.modules["_core"] = _core
-_spec.loader.exec_module(_core)
-
-from _core import (  # noqa: E402
+# ── 导入核心模块 ─────────────────────────────
+import wuyatu_core as _core  # noqa: E402
+from wuyatu_core import (    # noqa: E402
     baidu_search, download_one, _ensure_baidu_cookies,
     get_desktop_path, url_sig,
     DOWNLOADED_URL_SIGS, DOWNLOAD_WORKERS, TIMEOUT,
@@ -234,7 +229,7 @@ class WuyatuApp:
                 self.page.update()
                 return
 
-        sys.modules["_core"]._log_func = self._log_cb
+        _core._log_func = self._log_cb
 
         self._running = True
         self.start_btn_text.value = "下载中..."
