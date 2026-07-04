@@ -8,7 +8,7 @@ on:
 env:
   PYTHON_VERSION: '3.11'
   JAVA_VERSION: '17'
-  FLUTTER_VERSION: '3.41.7'   # 匹配 Flet CLI 要求的版本
+  FLUTTER_VERSION: '3.41.7'
 
 jobs:
   build:
@@ -51,6 +51,21 @@ jobs:
         run: |
           echo y | flet build apk --verbose 2>&1 | tee build-log.txt
 
+      - name: 查找 APK 文件
+        if: always()
+        run: |
+          echo "=== 搜索所有 .apk 文件 ==="
+          find / -name "*.apk" -type f 2>/dev/null | head -20
+          echo ""
+          echo "=== 搜索所有 .aab 文件 ==="
+          find / -name "*.aab" -type f 2>/dev/null | head -10
+          echo ""
+          echo "=== 当前目录结构 ==="
+          ls -la
+          echo ""
+          echo "=== build 目录（如果存在）==="
+          find build -type f 2>/dev/null || echo "(没有 build 目录)"
+
       - name: 上传构建日志
         if: always()
         uses: actions/upload-artifact@v4
@@ -64,5 +79,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: 无涯图片爬取-APK
-          path: build/apk/*.apk
+          path: "**/*.apk"
           retention-days: 30
+          if-no-files-found: warn
