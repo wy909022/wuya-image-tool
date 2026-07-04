@@ -6,6 +6,3 @@ copyright = "Copyright (C) 2026 无涯"
 
 [tool.flet.android]
 min_sdk_version = 23
-
-[tool.flet.app]
-path = "."
