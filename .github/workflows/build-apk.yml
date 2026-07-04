@@ -9,12 +9,13 @@ on:
 env:
   PYTHON_VERSION: '3.11'
   JAVA_VERSION: '17'
+  FLUTTER_VERSION: '3.24.0'   # Flutter SDK 版本
 
 jobs:
   build:
     name: 打包 APK
     runs-on: ubuntu-latest
-    timeout-minutes: 60      # 最长等待 60 分钟（首次需下载 Flutter SDK）
+    timeout-minutes: 60
 
     steps:
       # ── 第一步：检出代码 ──
@@ -27,33 +28,45 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
-      # ── 第三步：安装项目依赖 ──
+      # ── 第三步：安装 Java（Android 打包必需） ──
+      - name: 安装 Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: ${{ env.JAVA_VERSION }}
+
+      # ── 第四步：安装 Flutter SDK ──
+      - name: 安装 Flutter SDK
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: 'stable'
+
+      # ── 第五步：安装 Android SDK ──
+      - name: 安装 Android SDK
+        uses: android-actions/setup-android@v3
+        with:
+          accept-android-sdk-licenses: true
+
+      # ── 第六步：安装 Python 依赖 ──
       - name: 安装 Python 依赖
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      # ── 第四步：安装 Java（Android 打包必需） ──
-      - name: 安装 Java
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'zulu'
-          java-version: ${{ env.JAVA_VERSION }}
-
-      # ── 第五步：构建 APK ──
-      # Flet 会自动下载 Flutter SDK 和 Android SDK（首次约 5-8 分钟）
+      # ── 第七步：构建 APK ──
       - name: 构建 APK
         run: |
           flet build apk mobile_app.py \
-            --name "无涯图片爬取" \
-            --android-package-name "com.wuya.imagetool" \
-            --include-packages "requests"
+            --product "无涯图片爬取" \
+            --org "com.wuya.imagetool" \
+            --include-packages "requests" \
+            --verbose
 
-      # ── 第六步：上传 APK 产物 ──
-      # 构建完成后，APK 会出现在 build/apk/ 目录中
+      # ── 第八步：上传 APK 产物 ──
       - name: 上传 APK
         uses: actions/upload-artifact@v4
         with:
           name: 无涯图片爬取-APK
           path: build/apk/*.apk
-          retention-days: 30   # APK 保留 30 天，之后自动删除
+          retention-days: 30
